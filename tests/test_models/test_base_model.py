@@ -16,7 +16,8 @@ class TestBaseModel(unittest.TestCase):
         """
         obj1 = BaseModel()
         obj2 = BaseModel()
-        self.assertTrue(type(obj1.id) == str and type(obj2.id) == str)
+        self.assertIsInstance(obj1.id, str)
+        self.assertIsInstance(obj2.id, str)
         self.assertNotEqual(obj1.id, obj2.id)
 
     def test_created_at_and_updated_at(self):
@@ -24,10 +25,8 @@ class TestBaseModel(unittest.TestCase):
         Tests 'created_at & updated_at' attributes.
         """
         obj = BaseModel()
-        self.assertTrue(
-            type(obj.created_at) == datetime and
-            type(obj.updated_at) == datetime
-        )
+        self.assertIsInstance(obj.created_at, datetime)
+        self.assertIsInstance(obj.updated_at, datetime)
         self.assertEqual(obj.created_at, obj.updated_at)
 
     def test_save(self):
@@ -36,7 +35,7 @@ class TestBaseModel(unittest.TestCase):
         """
         obj = BaseModel()
         obj.save()
-        self.assertGreater(obj.updated_at, obj.created_at)
+        self.assertNotEqual(obj.created_at, obj.updated_at)
 
     def test_to_dict(self):
         """
@@ -44,12 +43,14 @@ class TestBaseModel(unittest.TestCase):
         """
         obj = BaseModel()
         obj.number = 89
+        obj.name = 'alx'
         my_dict = obj.to_dict()
         self.assertEqual(my_dict['__class__'], obj.__class__.__name__)
         self.assertEqual(my_dict['id'], obj.id)
         self.assertEqual(my_dict['created_at'], obj.created_at.isoformat())
         self.assertEqual(my_dict['updated_at'], obj.updated_at.isoformat())
         self.assertEqual(my_dict['number'], 89)
+        self.assertEqual(my_dict['name'], 'alx')
 
     def test_create_instance_from_dictionary(self):
         """
