@@ -51,6 +51,16 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_dict['updated_at'], obj.updated_at.isoformat())
         self.assertEqual(my_dict['number'], 89)
 
+    def test_create_instance_from_dictionary(self):
+        """
+        Tests create instance from dictionary aka kwargs
+        """
+        obj1 = BaseModel()
+        my_dict = obj1.to_dict()
+        obj2 = BaseModel(**my_dict)
+        self.assertEqual(obj1.__dict__, obj2.__dict__)
+        self.assertFalse(obj1 is obj2)
+
     def test_string_representation(self):
         """
         Tests string representation.
