@@ -10,36 +10,49 @@ class TestBaseModel(unittest.TestCase):
     """
     Unittest of 'BaseModel' class.
     """
-    def test_id(self):
+    def test_id_type(self):
         """
-        Tests 'id' attribute.
+        Tests 'id' type.
+        """
+        obj = BaseModel()
+        self.assertIsInstance(obj.id, str)
+
+    def test_each_instance_has_unique_id(self):
+        """
+        Tests each instance has unique 'id'.
         """
         obj1 = BaseModel()
         obj2 = BaseModel()
-        self.assertIsInstance(obj1.id, str)
-        self.assertIsInstance(obj2.id, str)
         self.assertNotEqual(obj1.id, obj2.id)
 
-    def test_created_at_and_updated_at(self):
+    def test_created_at_and_updated_at_types(self):
         """
-        Tests 'created_at & updated_at' attributes.
+        Tests 'created_at & updated_at' types.
         """
         obj = BaseModel()
         self.assertIsInstance(obj.created_at, datetime)
         self.assertIsInstance(obj.updated_at, datetime)
-        self.assertEqual(obj.created_at, obj.updated_at)
 
-    def test_save(self):
+    def test_created_at_and_updated_at_is_same_in_new_instance(self):
         """
-        Tests 'save' method.
+        Tests 'created_at' and 'updated_at' is same in new instance.
+        """
+        obj = BaseModel()
+        self.assertEqual(obj.created_at, obj.updated_at)
+        self.assertTrue(obj.created_at is obj.updated_at)
+
+    def test_updated_at_is_updated_when_save_is_called(self):
+        """
+        Tests 'updated_at' is updated when save is called.
         """
         obj = BaseModel()
         obj.save()
         self.assertNotEqual(obj.created_at, obj.updated_at)
+        self.assertFalse(obj.created_at is obj.updated_at)
 
-    def test_to_dict(self):
+    def test_convert_an_instance_into_serializable_dict(self):
         """
-        Tests 'to_dict' method.
+        Tests convert an instance into serializable dict.
         """
         obj = BaseModel()
         obj.number = 89
@@ -52,9 +65,9 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(my_dict['number'], 89)
         self.assertEqual(my_dict['name'], 'alx')
 
-    def test_create_instance_from_dictionary(self):
+    def test_create_an_instance_from_dict(self):
         """
-        Tests create instance from dictionary aka kwargs
+        Tests create instance from dict aka kwargs.
         """
         obj1 = BaseModel()
         my_dict = obj1.to_dict()
