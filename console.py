@@ -192,6 +192,7 @@ class HBNBCommand(cmd.Cmd):
 
         new_dict.save()
 
+        # Will add more tomorrow
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
 
