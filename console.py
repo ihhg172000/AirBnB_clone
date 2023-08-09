@@ -134,6 +134,64 @@ class HBNBCommand(cmd.Cmd):
         print("Prints all str representation of instances")
         print("[Usage]: all or all <classname>\n")
 
+    def do_update(self, args):
+        """Updates an instance based on the class name 
+        and id by adding or updating attribute"""
+        # Seperating class name
+        input_split = args.partition(" ")
+        if input_split[0]:
+            class_n = input_split[0]
+        else:
+            print("** class name missing **")
+            return
+        
+        # Missing class name
+        if class_n not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        # Seperating instance Id
+        input_split = input_split[2].partition(" ")
+        if input_split[0]:
+            class_id = input_split[0]
+        else:
+            print("** instance id missing **")
+            return
+
+        # Missing instance id
+        instance_key = class_n + '.' + class_id
+        if instance_key not in storage.all():
+            print("** no instance found **")
+            return
+
+        # Seperating Attribute name
+        input_split = input_split[2].partition(" ")
+        if input_split[0]:
+            attr_name = input_split[0]
+        else:
+            print("** attribute name missing **")
+            return
+
+        # Seperating attribute value
+        input_split = input_split[2].partition(" ")
+        if input_split[0]:
+            attr_value = input_split[0]
+        else:
+            print("** value missing **")
+            return
+
+        # Getting the Attr type
+        attr_type = type(storage.all()[attr_name])
+
+        # Casting the value into the type
+        attr_value_type = attr_type(attr_value)
+
+        new_dict = storage.all()[instance_key]
+
+        new_dict.__dict__.update({attr_name: attr_value_type})
+
+        new_dict.save()
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
 
