@@ -49,7 +49,7 @@ class HBNBCommand(cmd.Cmd):
         elif args not in self.classes:
             print("** class doesn't exist **")
             return
-        obj = BaseModel()
+        obj = self.classes[args]()
         obj.save()  # should we use the class save or the storage save? - using both now
         print(obj.id)
         storage.save()
@@ -123,7 +123,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for k, v in  storage.all().items():
-                output_list.append(str(v))
+                if k.split('.')[0] == input_split[0]:
+                    output_list.append(str(v))
         else:
             for k, v in storage.all().items():
                 output_list.append(str(v))
