@@ -131,6 +131,9 @@ class HBNBCommand(cmd.Cmd):
 
     def help_all(self):
         """Help info about the all command"""
-        pass
+        print("Prints all str representation of instances")
+        print("[Usage]: all or all <classname>\n")
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
