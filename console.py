@@ -128,5 +128,9 @@ class HBNBCommand(cmd.Cmd):
             for k, v in storage.all().items():
                 output_list.append(str(v))
         print(output_list)
+
+    def help_all(self):
+        """Help info about the all command"""
+        pass
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
