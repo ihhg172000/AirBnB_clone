@@ -3,6 +3,7 @@ Contains the definition of 'FileStorage' class.
 """
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -11,7 +12,7 @@ class FileStorage:
     that serializes instances to a JSON file and
     deserializes JSON file to instances.
     """
-    __file_path = 'airbnb.json'
+    __file_path = 'hbnb.json'
     __objects = {}
 
     def all(self):
@@ -44,7 +45,8 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path) as file:
                 FileStorage.__objects = {
-                    k: BaseModel(**v) for k, v in json.load(file).items()
+                    k: eval(f"{v['__class__']}(**{v})")
+                    for k, v in json.load(file).items()
                 }
         except FileNotFoundError:
             pass
