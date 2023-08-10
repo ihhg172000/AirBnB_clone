@@ -5,12 +5,25 @@ import sys
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """Our console class"""
     prompt = '(hbnb) '
-    classes = {'BaseModel': BaseModel, 'User': User}
+    classes = (
+        'BaseModel',
+        'User',
+        'Place',
+        'State',
+        'City',
+        'Amenity',
+        'Review'
+    )
 
     def do_create(self, line):
         """
@@ -25,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if class_name not in self.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
@@ -51,7 +64,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if class_name not in self.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
@@ -84,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if class_name not in self.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
@@ -119,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             print([str(v) for v in storage.all().values()])
             return
 
-        if class_name not in self.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
@@ -152,7 +165,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        if class_name not in self.classes:
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
@@ -187,12 +200,12 @@ class HBNBCommand(cmd.Cmd):
     def help_update(self):
         """Help info about the update command"""
         print(
-            'Updates an instance based on the class name and id' +
+            'Updates an instance based on the class name and id ' +
             'by adding or updating attribute'
         )
         print(
             '[Usage]: update <class name> <id> ' +
-            '<attribute name> "<attribute value>"'
+            '<attribute name> "<attribute value>"\n'
         )
 
     def do_quit(self, line):
