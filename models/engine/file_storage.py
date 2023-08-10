@@ -8,11 +8,9 @@ from models.user import User
 
 class FileStorage:
     """
-    Definition of 'FileStorage' class,
-    that serializes instances to a JSON file and
-    deserializes JSON file to instances.
+    Definition of 'FileStorage' class.
     """
-    __file_path = 'hbnb.json'
+    __file_path = 'file.json'
     __objects = {}
 
     def all(self):

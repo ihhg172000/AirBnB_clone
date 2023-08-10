@@ -1,83 +1,68 @@
 #!/usr/bin/python3
 """ Enty Point To The Console Module """
-
-
 import cmd
 import sys
+from models import storage
 from models.base_model import BaseModel
-from models.__init__ import storage
 from models.user import User
-"""from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review"""
 
 
 class HBNBCommand(cmd.Cmd):
     """Our console class"""
     prompt = '(hbnb) '
-
     classes = {'BaseModel': BaseModel, 'User': User}
 
-    def do_quit(self, line):
-        """quit implementation to exit the program"""
-        exit()
+    def do_create(self, line):
+        """
+        Creates a new instance of BaseModel,
+        saves it (to the JSON file) and prints the id.
+        """
+        args = line.split()
 
-    def do_EOF(self, line):
-        """EOF implementation to exit the program"""
-        exit()
-
-    def help_quit(self):
-        """quit help documentation"""
-        print("This method Quits the program\n")
-
-    def help_EOF(self):
-        """EOF help documentation"""
-        print("This method Exits the program (Ctrl-D or Ctrl-Z).\n")
-
-    def emptyline(self):
-        """Do nothing when an empty line is entered"""
-        pass
-
-    def do_create(self, args):
-        """Creates a new instance of BaseModel, saves it
-        (to the JSON file) and prints the id"""
-        if not args:
+        try:
+            class_name = args[0]
+        except IndexError:
             print("** class name missing **")
             return
-        elif args not in self.classes:
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        obj = self.classes[args]()
-        obj.save()  # should we use the class save or the storage save? - using both now
+
+        obj = eval(f'{class_name}()')
+        obj.save()
         print(obj.id)
-        storage.save()
 
     def help_create(self):
         """Help info about the create command"""
         print("Creates an instance of any Class, saves it and print id")
         print("[Usage]: create <className>\n")
 
-    def do_show(self, args):
-        """Prints the string representation of an instance
-        based on the class name and id"""
-        input_split = args.partition(" ")
-        class_n = input_split[0]
-        class_id = input_split[2]
-        if not class_n:
+    def do_show(self, line):
+        """
+        Prints the string representation of an instance
+        based on the class name and id.
+        """
+        args = line.split()
+
+        try:
+            class_name = args[0]
+        except IndexError:
             print("** class name missing **")
             return
-        elif class_n not in self.classes:
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
-            print(HBNBCommand.classes)
             return
-        elif not class_id:
+
+        try:
+            id = args[1]
+        except IndexError:
             print("** instance id missing **")
             return
-        instance_key = class_n + '.' + class_id
+
         try:
-            print(str(storage.all()[instance_key]))
+            print(str(storage.all()[f'{class_name}.{id}']))
         except KeyError:
             print("** no instance found **")
             return
@@ -87,113 +72,149 @@ class HBNBCommand(cmd.Cmd):
         print("Shows the string representation of an instance")
         print("[Usage]: show <className> <objectId>\n")
 
-    def do_destroy(self, args):
-        """Deletes an instance based on the class name and id"""
-        input_split = args.partition(" ")
-        class_n = input_split[0]
-        class_id = input_split[2]
-        if not class_n:
+    def do_destroy(self, line):
+        """
+        Deletes an instance based on the class name and id.
+        """
+        args = line.split()
+
+        try:
+            class_name = args[0]
+        except IndexError:
             print("** class name missing **")
             return
-        elif class_n not in self.classes:
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        elif not class_id:
+
+        try:
+            id = args[1]
+        except IndexError:
             print("** instance id missing **")
             return
-        instance_key = class_n + '.' + class_id
+
         try:
-            del(storage.all()[instance_key])
+            del storage.all()[f'{class_name}.{id}']
             storage.save()
         except KeyError:
             print("** no instance found **")
+            return
 
     def help_destroy(self):
         """Help info about the destroy command"""
         print("Deletes an instance based on the class name and id")
         print("[Usage]: destroy <classname> <objectsId>\n")
 
-    def do_all(self, args):
-        """Prints all string representation of all instances
-        based or not on the class name."""
-        output_list = []
-        if args:
-            input_split = args.partition(" ")
-            if input_split[0] not in self.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in  storage.all().items():
-                if k.split('.')[0] == input_split[0]:
-                    output_list.append(str(v))
-        else:
-            for k, v in storage.all().items():
-                output_list.append(str(v))
-        print(output_list)
+    def do_all(self, line):
+        """
+        Prints all string representation of all instances
+        based or not on the class name.
+        """
+        args = line.split()
+
+        try:
+            class_name = args[0]
+        except IndexError:
+            print([str(v) for v in storage.all().values()])
+            return
+
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        print(
+            [
+                str(v) for v in list(
+                    filter(
+                        lambda v: v.__class__.__name__ == class_name,
+                        storage.all().values()
+                    )
+                )
+            ]
+        )
 
     def help_all(self):
         """Help info about the all command"""
         print("Prints all str representation of instances")
         print("[Usage]: all or all <classname>\n")
 
-    def do_update(self, args):
-        """Updates an instance based on the class name 
-        and id by adding or updating attribute"""
-        # Seperating class name
-        input_split = args.partition(" ")
-        if input_split[0]:
-            class_n = input_split[0]
-        else:
+    def do_update(self, line):
+        """
+        Updates an instance based on the class name
+        and id by adding or updating attribute.
+        """
+        args = line.split()
+
+        try:
+            class_name = args[0]
+        except IndexError:
             print("** class name missing **")
             return
-        
-        # Missing class name
-        if class_n not in self.classes:
+
+        if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
-        # Seperating instance Id
-        input_split = input_split[2].partition(" ")
-        if input_split[0]:
-            class_id = input_split[0]
-        else:
+        try:
+            id = args[1]
+        except IndexError:
             print("** instance id missing **")
             return
 
-        # Missing instance id
-        instance_key = class_n + '.' + class_id
-        if instance_key not in storage.all():
-            print("** no instance found **")
-            return
-
-        # Seperating Attribute name
-        input_split = input_split[2].partition(" ")
-        if input_split[0]:
-            attr_name = input_split[0]
-        else:
+        try:
+            attr_name = args[2]
+        except IndexError:
             print("** attribute name missing **")
             return
 
-        # Seperating attribute value
-        input_split = input_split[2].partition(" ")
-        if input_split[0]:
-            attr_value = input_split[0]
-        else:
+        try:
+            attr_value = args[3].strip('"')
+        except IndexError:
             print("** value missing **")
             return
 
-        # Getting the Attr type
-        attr_type = type(storage.all()[attr_name])
+        if attr_value.isdigit():
+            attr_value = int(attr_value)
+        elif attr_value.replace('.', '').isdigit():
+            attr_value = float(attr_value)
 
-        # Casting the value into the type
-        attr_value_type = attr_type(attr_value)
+        obj = storage.all()[f'{class_name}.{id}']
 
-        new_dict = storage.all()[instance_key]
+        setattr(obj, attr_name, attr_value)
+        obj.save()
 
-        new_dict.__dict__.update({attr_name: attr_value_type})
+    def help_update(self):
+        """Help info about the update command"""
+        print(
+            'Updates an instance based on the class name and id' +
+            'by adding or updating attribute'
+        )
+        print(
+            '[Usage]: update <class name> <id> ' +
+            '<attribute name> "<attribute value>"'
+        )
 
-        new_dict.save()
+    def do_quit(self, line):
+        """quit implementation to exit the program"""
+        exit()
 
-        # Will add more tomorrow
+    def help_quit(self):
+        """quit help documentation"""
+        print("This method Quits the program\n")
+
+    def do_EOF(self, line):
+        """EOF implementation to exit the program"""
+        exit()
+
+    def help_EOF(self):
+        """EOF help documentation"""
+        print("This method Exits the program (Ctrl-D or Ctrl-Z).\n")
+
+    def emptyline(self):
+        """Do nothing when an empty line is entered"""
+        pass
+
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-

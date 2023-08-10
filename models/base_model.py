@@ -7,8 +7,7 @@ import models
 
 class BaseModel:
     """
-    Definition of 'BaseModel' class,
-    that defines all common attributes/methods for other classes.
+    Definition of 'BaseModel' class.
     """
     def __init__(self, *args, **kwargs):
         """
