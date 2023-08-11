@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Enty Point To The Console Module """
 import cmd
-import sys
+from shlex import split
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -30,7 +30,11 @@ class HBNBCommand(cmd.Cmd):
         Creates a new instance of BaseModel,
         saves it (to the JSON file) and prints the id.
         """
-        args = line.split()
+        try:
+            args = split(line)
+        except ValueError:
+            print('** no closing quotation **')
+            return
 
         try:
             class_name = args[0]
@@ -56,7 +60,11 @@ class HBNBCommand(cmd.Cmd):
         Prints the string representation of an instance
         based on the class name and id.
         """
-        args = line.split()
+        try:
+            args = split(line)
+        except ValueError:
+            print('** no closing quotation **')
+            return
 
         try:
             class_name = args[0]
@@ -89,7 +97,11 @@ class HBNBCommand(cmd.Cmd):
         """
         Deletes an instance based on the class name and id.
         """
-        args = line.split()
+        try:
+            args = split(line)
+        except ValueError:
+            print('** no closing quotation **')
+            return
 
         try:
             class_name = args[0]
@@ -124,7 +136,11 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all instances
         based or not on the class name.
         """
-        args = line.split()
+        try:
+            args = split(line)
+        except ValueError:
+            print('** no closing quotation **')
+            return
 
         try:
             class_name = args[0]
@@ -157,7 +173,11 @@ class HBNBCommand(cmd.Cmd):
         Updates an instance based on the class name
         and id by adding or updating attribute.
         """
-        args = line.split()
+        try:
+            args = split(line)
+        except ValueError:
+            print('** no closing quotation **')
+            return
 
         try:
             class_name = args[0]
@@ -182,7 +202,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         try:
-            attr_value = args[3].strip('"')
+            attr_value = args[3]
         except IndexError:
             print("** value missing **")
             return
@@ -210,7 +230,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, line):
         """quit implementation to exit the program"""
-        exit()
+        quit()
 
     def help_quit(self):
         """quit help documentation"""
@@ -218,7 +238,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """EOF implementation to exit the program"""
-        exit()
+        quit()
 
     def help_EOF(self):
         """EOF help documentation"""
