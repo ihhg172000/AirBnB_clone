@@ -5,6 +5,8 @@ Contains the unittests for 'BaseModel' class.
 import unittest
 from models.base_model import BaseModel
 from models import storage
+from time import sleep
+from datetime import datetime
 
 class TestBaseModel_init(unittest.TestCase):
     """
@@ -17,9 +19,10 @@ class TestBaseModel_init(unittest.TestCase):
     def test_instantiation(self):
         self.assertEqual(BaseModel, type(BaseModel()))
 
-    """def test_stored_in_objects(self):
-        inst1 = BaseModel()
-        self.assertIn(BaseModel(), storage.all())"""
+    def test_using_kwargs(self):
+        inst1 = BaseModel(email="Ahmad@gmail", number=12)
+        self.assertEqual(inst1.email, "Ahmad@gmail")
+        self.assertEqual(inst1.number, 12)
 
     def test_id(self):
         self.assertEqual(type(BaseModel().id), str)
@@ -42,16 +45,21 @@ class TestBaseModel_init(unittest.TestCase):
     def test_save(self):
         inst1 = BaseModel()
         time1 = inst1.updated_at
+        sleep(0.1)
         inst1.save()
         time2 = inst1.updated_at
         self.assertGreater(time2, time1)
 
     def test_str_represnetation(self):
         inst1 = BaseModel()
+        inst1.id = "123"
+        dt = datetime.today()
+        dt_repr = repr(dt)
+        inst1.created_at = inst1.updated_at = dt
         inst1_str = inst1.__str__()
-        self.assertIn("[BaseModel] " + "(" + inst1.id + ")", inst1_str)
-        self.assertIn("'created_at': ", inst1_str)
-        self.assertIn("'updated_at': ", inst1_str)
+        self.assertIn("[BaseModel] " + "(123)", inst1_str)
+        self.assertIn("'created_at': " + dt_repr, inst1_str)
+        self.assertIn("'updated_at': " + dt_repr, inst1_str)
 
 class TestBaseModel_to_dict(unittest.TestCase):
     """Unit tests for testing to_dict() method in BaseModel Class"""
@@ -64,6 +72,8 @@ class TestBaseModel_to_dict(unittest.TestCase):
         self.assertIn("id", inst1.to_dict())
         self.assertIn("created_at", inst1.to_dict())
         self.assertIn("updated_at", inst1.to_dict())
+        self.assertEqual(type(inst1.to_dict()['created_at']), str)
+        self.assertEqual(type(inst1.to_dict()['updated_at']), str)
         self.assertIn("name", inst1.to_dict())
         self.assertIn("my_number", inst1.to_dict())
 
