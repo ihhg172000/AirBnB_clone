@@ -13,6 +13,12 @@ class TestReview_init(unittest.TestCase):
     """
     Unittest for 'Review' class.
     """
+    def test_default_values(self):
+        inst1 = Review()
+        self.assertEqual(inst1.place_id, '')
+        self.assertEqual(inst1.user_id, '')
+        self.assertEqual(inst1.text, '')
+
     def test_args_notused(self):
         inst1 = Review(1)
         self.assertNotIn(1, inst1.__dict__.values())

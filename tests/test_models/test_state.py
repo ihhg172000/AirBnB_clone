@@ -13,6 +13,10 @@ class TestState_init(unittest.TestCase):
     """
     Unittest for 'State' class.
     """
+    def test_default_values(self):
+        inst1 = State()
+        self.assertEqual(inst1.name, '')
+
     def test_args_notused(self):
         inst1 = State(1)
         self.assertNotIn(1, inst1.__dict__.values())

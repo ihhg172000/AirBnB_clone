@@ -13,6 +13,13 @@ class TestUser_init(unittest.TestCase):
     """
     Unittest for 'User' class.
     """
+    def test_default_values(self):
+        inst1 = User()
+        self.assertEqual(inst1.last_name, '')
+        self.assertEqual(inst1.first_name, '')
+        self.assertEqual(inst1.email, '')
+        self.assertEqual(inst1.password, '')
+
     def test_args_notused(self):
         inst1 = User(1)
         self.assertNotIn(1, inst1.__dict__.values())

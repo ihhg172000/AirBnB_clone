@@ -13,6 +13,20 @@ class TestPlace_init(unittest.TestCase):
     """
     Unittest for 'Place' class.
     """
+    def test_default_args(self):
+        inst1 = Place()
+        self.assertEqual(inst1.city_id, '')
+        self.assertEqual(inst1.user_id, '')
+        self.assertEqual(inst1.name, '')
+        self.assertEqual(inst1.description, '')
+        self.assertEqual(inst1.number_rooms, 0)
+        self.assertEqual(inst1.number_bathrooms, 0)
+        self.assertEqual(inst1.max_guest, 0)
+        self.assertEqual(inst1.price_by_night, 0)
+        self.assertEqual(inst1.latitude, 0.0)
+        self.assertEqual(inst1.longitude, 0.0)
+        self.assertEqual(inst1.amenity_ids, [])
+        
     def test_args_notused(self):
         inst1 = Place(1)
         self.assertNotIn(1, inst1.__dict__.values())
