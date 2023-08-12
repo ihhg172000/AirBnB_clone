@@ -8,6 +8,7 @@ from models import storage
 from time import sleep
 from datetime import datetime
 
+
 class TestBaseModel_init(unittest.TestCase):
     """
     Unittest for 'BaseModel' class.
@@ -61,9 +62,9 @@ class TestBaseModel_init(unittest.TestCase):
         self.assertIn("'created_at': " + dt_repr, inst1_str)
         self.assertIn("'updated_at': " + dt_repr, inst1_str)
 
+
 class TestBaseModel_to_dict(unittest.TestCase):
     """Unit tests for testing to_dict() method in BaseModel Class"""
-    
     def test_to_dict_keys(self):
         inst1 = BaseModel()
         inst1.name = "HereisMyName"
