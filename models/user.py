@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Contains the definition of 'User' class.
 """
