@@ -26,7 +26,7 @@ class TestPlace_init(unittest.TestCase):
         self.assertEqual(inst1.latitude, 0.0)
         self.assertEqual(inst1.longitude, 0.0)
         self.assertEqual(inst1.amenity_ids, [])
-        
+
     def test_args_notused(self):
         inst1 = Place(1)
         self.assertNotIn(1, inst1.__dict__.values())
@@ -100,7 +100,7 @@ class TestPlace_to_dict(unittest.TestCase):
 
     def test_attributes_type(self):
         inst1 = Place(city_id='123', user_id='456', name='Placee',
-                description='text', longitude=1.2, amenity_ids=[1, 2, 3])
+                      description='text', longitude=1.2, amenity_ids=[1, 2, 3])
         self.assertEqual(str, type(inst1.to_dict()['city_id']))
         self.assertEqual(str, type(inst1.to_dict()['user_id']))
         self.assertEqual(str, type(inst1.to_dict()['name']))
