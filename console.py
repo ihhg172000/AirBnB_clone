@@ -4,7 +4,6 @@ Contains the definition of 'HBNBCommand' class.
 """
 import cmd
 import re
-import colorama
 from shlex import split
 from models import storage
 from models.base_model import BaseModel
@@ -20,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """
     Definition of 'HBNBCommand' class.
     """
-    prompt = colorama.Fore.GREEN + '(hbnb) ' + colorama.Fore.RESET
+    prompt = '(hbnb) '
     classes = (
         'BaseModel',
         'User',
@@ -30,10 +29,6 @@ class HBNBCommand(cmd.Cmd):
         'Amenity',
         'Review'
     )
-
-    def __init__(self):
-        super().__init__()
-        colorama.init()
 
     def do_create(self, line):
         """
@@ -429,14 +424,14 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints error
         """
-        print(colorama.Fore.RED + text + colorama.Fore.RESET)
+        print(text)
 
     @staticmethod
     def __print_info(text):
         """
         Prints info
         """
-        print(colorama.Fore.CYAN + text + colorama.Fore.RESET)
+        print(text)
 
 
 if __name__ == "__main__":
