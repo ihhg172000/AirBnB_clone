@@ -4,7 +4,6 @@ Contains the definition of 'HBNBCommand' class.
 """
 import cmd
 import re
-import colorama
 from shlex import split
 from models import storage
 from models.base_model import BaseModel
@@ -20,11 +19,7 @@ class HBNBCommand(cmd.Cmd):
     """
     Definition of 'HBNBCommand' class.
     """
-    prompt = (
-        # colorama.Fore.GREEN +
-        '(hbnb) '  # +
-        # colorama.Fore.RESET
-    )
+    prompt = '(hbnb) '
     classes = (
         'BaseModel',
         'User',
@@ -46,11 +41,11 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if not kwargs['cls_name']:
-            HBNBCommand.__print_error("** class name missing **")
+            print("** class name missing **")
             return
 
         if kwargs['cls_name'] not in HBNBCommand.classes:
-            HBNBCommand.__print_error("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         obj = eval(f"{kwargs['cls_name']}()")
@@ -65,7 +60,7 @@ class HBNBCommand(cmd.Cmd):
             'Creates a new instance based on the class name, '
             'saves it (to the JSON file) and prints the id.'
         )
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n'
             '\tcreate <class_name> Or\n'
             '\t<class_name>.create()'
@@ -82,15 +77,15 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if not kwargs['cls_name']:
-            HBNBCommand.__print_error("** class name missing **")
+            print("** class name missing **")
             return
 
         if kwargs['cls_name'] not in HBNBCommand.classes:
-            HBNBCommand.__print_error("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         if not kwargs['id']:
-            HBNBCommand.__print_error("** instance id missing **")
+            print("** instance id missing **")
             return
 
         try:
@@ -100,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
                 )
             )
         except KeyError:
-            HBNBCommand.__print_error("** no instance found **")
+            print("** no instance found **")
             return
 
     def help_show(self):
@@ -111,7 +106,7 @@ class HBNBCommand(cmd.Cmd):
             'Prints the string representation of an instance '
             'based on the class name and id.'
         )
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n'
             '\tshow <class_name> <id> Or\n'
             '\t<class_name>.show(<id>)'
@@ -128,22 +123,22 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if not kwargs['cls_name']:
-            HBNBCommand.__print_error("** class name missing **")
+            print("** class name missing **")
             return
 
         if kwargs['cls_name'] not in HBNBCommand.classes:
-            HBNBCommand.__print_error("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         if not kwargs['id']:
-            HBNBCommand.__print_error("** instance id missing **")
+            print("** instance id missing **")
             return
 
         try:
             del storage.all()[f"{kwargs['cls_name']}.{kwargs['id']}"]
             storage.save()
         except KeyError:
-            HBNBCommand.__print_error("** no instance found **")
+            print("** no instance found **")
             return
 
     def help_destroy(self):
@@ -154,7 +149,7 @@ class HBNBCommand(cmd.Cmd):
             'Deletes an instance based on the class name and id '
             '(save the change into the JSON file).'
         )
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n'
             '\tdestroy <class_name> <id> Or\n'
             '\t<class_name>.destroy(<id>)'
@@ -175,7 +170,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if kwargs['cls_name'] not in HBNBCommand.classes:
-            HBNBCommand.__print_error("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         print(
@@ -197,7 +192,7 @@ class HBNBCommand(cmd.Cmd):
             'Prints all string representation of all instances '
             'based or not on the class name.'
         )
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n'
             '\tall Or\n'
             '\tall <class_name> Or\n'
@@ -218,7 +213,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if kwargs['cls_name'] not in HBNBCommand.classes:
-            HBNBCommand.__print_error("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         print(
@@ -237,7 +232,7 @@ class HBNBCommand(cmd.Cmd):
         Prints help documentation of 'count'
         """
         print('Prints the number of instances based or not on the class name.')
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n'
             '\tcount Or\n'
             '\tcount <class_name> Or\n'
@@ -255,23 +250,23 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if not kwargs['cls_name']:
-            HBNBCommand.__print_error("** class name missing **")
+            print("** class name missing **")
             return
 
         if kwargs['cls_name'] not in HBNBCommand.classes:
-            HBNBCommand.__print_error("** class doesn't exist **")
+            print("** class doesn't exist **")
             return
 
         if not kwargs['id']:
-            HBNBCommand.__print_error("** instance id missing **")
+            print("** instance id missing **")
             return
 
         if not kwargs['attr_name']:
-            HBNBCommand.__print_error("** attribute name missing **")
+            print("** attribute name missing **")
             return
 
         if not kwargs['attr_value']:
-            HBNBCommand.__print_error("** value missing **")
+            print("** value missing **")
             return
 
         try:
@@ -280,7 +275,7 @@ class HBNBCommand(cmd.Cmd):
             setattr(obj, kwargs['attr_name'], kwargs['attr_value'])
             obj.save()
         except KeyError:
-            HBNBCommand.__print_error("** no instance found **")
+            print("** no instance found **")
             return
 
     def help_update(self):
@@ -291,7 +286,7 @@ class HBNBCommand(cmd.Cmd):
             'Updates an instance based on the class name and id by adding '
             'or updating attribute (save the change into the JSON file).'
         )
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n'
             '\tupdate <class_name> <id> <attr_name> "<attr_value> Or\n'
             '\t<class_name>.update(<id>, <attr_name>, <attr_value>)'
@@ -308,7 +303,7 @@ class HBNBCommand(cmd.Cmd):
         Prints help documentation of 'quit'
         """
         print("quits the console.")
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n\tquit'
         )
 
@@ -323,7 +318,7 @@ class HBNBCommand(cmd.Cmd):
         Prints help documentation of 'EOF'.
         """
         print("quits the console.")
-        HBNBCommand.__print_info(
+        print(
             '[Usage]:\n\tEOF , Ctrl-D or Ctrl-Z'
         )
 
@@ -345,11 +340,11 @@ class HBNBCommand(cmd.Cmd):
                 line
             )[0]
         except IndexError:
-            HBNBCommand.__print_error(f'** invalid syntax: {line} **')
+            print(f'** invalid syntax: {line} **')
             return
 
         if command not in commands:
-            HBNBCommand.__print_error(f'** command not exist: {command} **')
+            print(f'** command not exist: {command} **')
             return
 
         cls_name = re.findall(
@@ -360,7 +355,7 @@ class HBNBCommand(cmd.Cmd):
         args = re.findall(r"^.+\..+\((.*)\)", line)[0]
 
         if len(re.findall(r'"', args)) % 2 != 0:
-            HBNBCommand.__print_error('** missing closing quotation **')
+            print('** missing closing quotation **')
             return
 
         args = re.sub(
@@ -385,7 +380,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             args = split(line)
         except ValueError:
-            HBNBCommand.__print_error('** missing closing quotation **')
+            print('** missing closing quotation **')
             return
 
         kwargs = {}
@@ -423,28 +418,6 @@ class HBNBCommand(cmd.Cmd):
             return float(arg)
 
         return arg
-
-    @staticmethod
-    def __print_error(error):
-        """
-        Prints error
-        """
-        print(
-            # colorama.Fore.RED +
-            error  # +
-            # colorama.Fore.RESET
-        )
-
-    @staticmethod
-    def __print_info(info):
-        """
-        Prints info
-        """
-        print(
-            # colorama.Fore.CYAN +
-            info  # +
-            # colorama.Fore.RESET
-        )
 
 
 if __name__ == "__main__":
