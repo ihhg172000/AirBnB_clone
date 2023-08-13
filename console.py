@@ -4,6 +4,7 @@ Contains the definition of 'HBNBCommand' class.
 """
 import cmd
 import re
+import colorama
 from shlex import split
 from models import storage
 from models.base_model import BaseModel
@@ -19,7 +20,11 @@ class HBNBCommand(cmd.Cmd):
     """
     Definition of 'HBNBCommand' class.
     """
-    prompt = '(hbnb) '
+    prompt = (
+        # colorama.Fore.GREEN +
+        '(hbnb) '  # +
+        # colorama.Fore.RESET
+    )
     classes = (
         'BaseModel',
         'User',
@@ -84,14 +89,14 @@ class HBNBCommand(cmd.Cmd):
             HBNBCommand.__print_error("** class doesn't exist **")
             return
 
-        if not kwargs['obj_id']:
+        if not kwargs['id']:
             HBNBCommand.__print_error("** instance id missing **")
             return
 
         try:
             print(
                 str(
-                    storage.all()[f"{kwargs['cls_name']}.{kwargs['obj_id']}"]
+                    storage.all()[f"{kwargs['cls_name']}.{kwargs['id']}"]
                 )
             )
         except KeyError:
@@ -130,12 +135,12 @@ class HBNBCommand(cmd.Cmd):
             HBNBCommand.__print_error("** class doesn't exist **")
             return
 
-        if not kwargs['obj_id']:
+        if not kwargs['id']:
             HBNBCommand.__print_error("** instance id missing **")
             return
 
         try:
-            del storage.all()[f"{kwargs['cls_name']}.{kwargs['obj_id']}"]
+            del storage.all()[f"{kwargs['cls_name']}.{kwargs['id']}"]
             storage.save()
         except KeyError:
             HBNBCommand.__print_error("** no instance found **")
@@ -257,7 +262,7 @@ class HBNBCommand(cmd.Cmd):
             HBNBCommand.__print_error("** class doesn't exist **")
             return
 
-        if not kwargs['obj_id']:
+        if not kwargs['id']:
             HBNBCommand.__print_error("** instance id missing **")
             return
 
@@ -270,7 +275,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         try:
-            obj = storage.all()[f"{kwargs['cls_name']}.{kwargs['obj_id']}"]
+            obj = storage.all()[f"{kwargs['cls_name']}.{kwargs['id']}"]
 
             setattr(obj, kwargs['attr_name'], kwargs['attr_value'])
             obj.save()
@@ -391,9 +396,9 @@ class HBNBCommand(cmd.Cmd):
             kwargs['cls_name'] = None
 
         try:
-            kwargs['obj_id'] = args[1]
+            kwargs['id'] = args[1]
         except IndexError:
-            kwargs['obj_id'] = None
+            kwargs['id'] = None
 
         try:
             kwargs['attr_name'] = args[2]
@@ -401,14 +406,14 @@ class HBNBCommand(cmd.Cmd):
             kwargs['attr_name'] = None
 
         try:
-            kwargs['attr_value'] = HBNBCommand.__casted_to_type(args[3])
+            kwargs['attr_value'] = HBNBCommand.__cast_to_type(args[3])
         except IndexError:
             kwargs['attr_value'] = None
 
         return kwargs
 
     @staticmethod
-    def __casted_to_type(arg):
+    def __cast_to_type(arg):
         """
         Casts arg type
         """
@@ -420,18 +425,26 @@ class HBNBCommand(cmd.Cmd):
         return arg
 
     @staticmethod
-    def __print_error(text):
+    def __print_error(error):
         """
         Prints error
         """
-        print(text)
+        print(
+            # colorama.Fore.RED +
+            error  # +
+            # colorama.Fore.RESET
+        )
 
     @staticmethod
-    def __print_info(text):
+    def __print_info(info):
         """
         Prints info
         """
-        print(text)
+        print(
+            # colorama.Fore.CYAN +
+            info  # +
+            # colorama.Fore.RESET
+        )
 
 
 if __name__ == "__main__":
