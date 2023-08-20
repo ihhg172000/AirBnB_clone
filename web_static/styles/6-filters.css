@@ -1,0 +1,88 @@
+.filters {
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.filters h3 {
+    margin: 0 30px;
+    font-weight: 600;
+}
+
+.filters h4 {
+    margin: 0 30px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.filters button {
+    height: 48px;
+    width: 20%;
+    background-color: #FF5A5F;
+    color: white;
+    font-size: 18px;
+    border: 0;
+    border-radius: 4px;
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+    transition: opacity 0.1s;
+}
+
+.filters button:hover {
+    opacity: 0.9;
+}
+
+.locations, .amenities {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.locations {
+    border-right: 1px solid #DDDDDD;
+}
+
+.dropdown {
+    background-color: #FAFAFA;
+    border: 1px solid #DDDDDD;
+    margin: 0;
+    position: absolute;
+    top: 70px;
+    left: -1px;
+    right: -1px;
+    opacity: 0;
+    transition: opacity 0.1s;
+    pointer-events: none;
+}
+
+.dropdown ul {
+    list-style-type: none;
+    padding-left: 30px;
+}
+
+.dropdown h2 {
+    font-size: 16px;
+}
+
+.dropdown li {
+    margin: 4px 0;
+}
+
+.locations:hover .dropdown {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.amenities:hover .dropdown {
+    opacity: 1;
+    pointer-events: all;
+}

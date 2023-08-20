@@ -20,7 +20,7 @@
     position: absolute;
     right: 30px;
     cursor: pointer;
-    transition: opacity 0.1s;
+    transition: opacity 1s;
 }
 
 .filters button:hover {
