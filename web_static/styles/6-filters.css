@@ -62,6 +62,7 @@
     opacity: 0;
     transition: opacity 0.1s;
     pointer-events: none;
+    z-index: 10;
 }
 
 .dropdown ul {
